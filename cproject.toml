@@ -1,6 +1,6 @@
 [toml2make]
 # This version number is for the toml2make SCHEMA, NOT toml2make itself.
-version = "1.2.0"
+version = "0.3.0"
 
 [project]
 name = "toml2make"
