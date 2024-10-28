@@ -12,7 +12,7 @@ author = "Arsalan 'Aeri' Kazmi"
 [compiler]
 cc = "gcc"
 cflags = "-Wall -Wextra -Wpedantic"
-cversion = "c17"
+cversion = "gnu17"
 
 [build]
 prefix = "~/.local"
