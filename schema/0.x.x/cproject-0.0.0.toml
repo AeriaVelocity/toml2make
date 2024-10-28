@@ -1,0 +1,18 @@
+# This is an UNSUPPORTED toml2make schema, kept here for posterity.
+# DO NOT use this schema in any current projects.
+
+[project]
+name = "toml2make"
+version = "0.1.0"
+license = "MIT"
+description = "A tool to convert TOML files to Makefiles, for C/C++ projects."
+[compiler]
+cc = "gcc"
+cflags = [
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+]
+cversion = "c17"
+[build]
+prefix = "$HOME/.local"

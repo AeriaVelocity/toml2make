@@ -112,6 +112,8 @@ For example, `toml2make -rcv` will automatically build and run the C project and
 
 TOML To Makefile's schema is present at [this own project's `cproject.toml` file.](https://github.com/AeriaVelocity/toml2make/blob/main/cproject.toml)
 
+For a full list of schema versions, see [this project's `schema/` directory.](https://github.com/AeriaVelocity/toml2make/tree/main/schema)
+
 Schema versions before v1.0.0 will not support backwards compatibility due to
 immaturity, but backwards compatibility of schema versions past v1.0.0 is
 planned.
