@@ -1,4 +1,4 @@
-# This is an UNSUPPORTED toml2make schema, kept here for posterity.
+# This is an UNSUPPORTED cproject.toml schema, kept here for posterity.
 # DO NOT use this schema in any current projects.
 
 [project]

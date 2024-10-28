@@ -1,4 +1,4 @@
-# This is the current version of the toml2make schema.
+# This is the current version of the cproject.toml schema.
 # However, this is still a 0.x.x schema and is subject to change - in the event
 # it's supplanted by a future version, it will be marked as unsupported.
 
