@@ -3,8 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 
-#define FALSE 0;
-#define TRUE 1;
+#define FALSE 0
+#define TRUE 1
 
 #define MAX_LINE_LENGTH 1024
 #define MAX_TOKEN_LENGTH 128
@@ -14,6 +14,8 @@ void trim_whitespace(char *str);
 void generate_makefile(const char *project_name, const char *c_version);
 char *get_cwd(char *buf, size_t size);
 char *get_full_path(const char *path);
+void assign_value(char *line, char *key, char *value);
+void assign_values(char *line, char *key, char **values, int *num_values);
 
 #ifdef _WIN32
 #include <direct.h>
@@ -48,6 +50,25 @@ void trim_whitespace(char *str) {
     }
 
     *(end + 1) = '\0';
+}
+
+void assign_value(char *line, char *key, char *value) {
+    if (strstr(line, key) != NULL) {
+        sscanf(line, "%*s = \"%[^\"]\"", value);
+    }
+}
+
+void assign_values(char *line, char *key, char **values, int *num_values) {
+    if (strstr(line, key) != NULL) {
+        char *token = strtok(line, "\"");
+        while (token != NULL) {
+            if (*num_values < MAX_VALUE_LENGTH) {
+                values[*num_values] = strdup(token);
+                (*num_values) += 1;
+            }
+            token = strtok(NULL, "\"");
+        }
+    }   
 }
 
 int main(int argc, char **argv) {
@@ -92,11 +113,11 @@ If it exists somewhere else, try `%s path/to/cproject.toml`.\n", argv[0]);
 
     char schema_version[MAX_VALUE_LENGTH] = "";
 
-    char project_name[MAX_VALUE_LENGTH];
-    char project_version[MAX_VALUE_LENGTH];
-    char project_license[MAX_VALUE_LENGTH];
-    char project_description[MAX_VALUE_LENGTH];
-    char project_author[MAX_VALUE_LENGTH];
+    char project_name[MAX_VALUE_LENGTH] = "";
+    char project_version[MAX_VALUE_LENGTH] = "";
+    char project_license[MAX_VALUE_LENGTH] = "";
+    char project_description[MAX_VALUE_LENGTH] = "";
+    char project_author[MAX_VALUE_LENGTH] = "";
 
     char compiler_cc[MAX_VALUE_LENGTH] = "gcc";
     int num_cflags = 0;
@@ -143,23 +164,35 @@ If it exists somewhere else, try `%s path/to/cproject.toml`.\n", argv[0]);
         }
 
         if (strcmp(section, "project") == 0) {
-            if (strstr(line, "name =") != NULL) {
-                sscanf(line, "name = \"%[^\"]\"", project_name);
-            }
+            assign_value(line, "name =", project_name);
+            assign_value(line, "version =", project_version);
+            assign_value(line, "license =", project_license);
+            assign_value(line, "description =", project_description);
+            assign_value(line, "author =", project_author);
 
-            // TODO
+            continue;
         }
 
         if (strcmp(section, "compiler") == 0) {
-            // TODO
+            assign_value(line, "cc =", compiler_cc);
+            assign_values(line, "cflags =", compiler_cflags, &num_cflags);
+            assign_value(line, "cversion =", compiler_cversion);
+
+            continue;
         }
 
         if (strcmp(section, "build") == 0) {
-            // TODO
+            assign_value(line, "prefix =", build_prefix);
+            assign_value(line, "src =", build_src);
+            assign_value(line, "build =", build_dir);
+            assign_value(line, "bin =", build_bin);
+
+            continue;
         }
 
         if (strcmp(section, "makefile") == 0) {
-            // TODO
+            assign_value(line, "out =", makefile_out);
+            assign_value(line, "log =", makefile_log);
         }
     }
 
