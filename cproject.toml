@@ -14,3 +14,7 @@ cversion = "c17"
 
 [build]
 prefix = "$HOME/.local"
+
+[makefile]
+out = "Makefile"
+log = "toml2make.log"
