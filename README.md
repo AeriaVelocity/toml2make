@@ -52,6 +52,39 @@ To install the tool system-wide, run `make install prefix=/usr/local`.
 
 ## Usage
 
+Create a file named `cproject.toml` in the root directory of your project.
+
+This should be called `cproject.toml` - *not* `toml2make.toml`. or `Make.toml`
+or anything else.
+
+> [!NOTE]
+> In a future version, this tool will be able to generate a project structure
+> including a `cproject.toml` for you with the `toml2make init` command.
+
+Populate the file with data, like so:
+
+```toml
+[toml2make]
+version = "0.3.0"
+
+[project]
+name = "your-project-name"
+version = "0.1.0"
+license = "ISC" # or whatever licence you're using
+description = "A short description of your project."
+author = "Your Name"
+
+[compiler]
+cc = "gcc"
+cflags = "-Wall"
+cversion = "c11"
+```
+
+For a more complete sample, refer to the [example above.](#example-cprojecttoml-format)
+
+When the file is created, create your source directory at `src`. Then, run
+the following commands:
+
 ```bash
 toml2make # Convert the `cproject.toml` file to a Makefile
 make      # Build the C project
