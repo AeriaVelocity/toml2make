@@ -27,6 +27,7 @@ description = "A project written in C."
 author = "Some Guy"
 
 [compiler]
+# If you're building a C++ project instead, replace `gcc` with `g++` and `c17` with `c++17`.
 cc = "gcc"
 cflags = "-Wall -Wextra -Wpedantic"
 cversion = "c17"
