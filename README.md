@@ -108,6 +108,17 @@ will generate a `Makefile` from your `cproject.toml` anyway.
 
 For example, `toml2make -rcv` will automatically build and run the C project and remove the Makefile when done, all with verbose output.
 
+## Schema
+
+TOML To Makefile's schema is present at [this own project's `cproject.toml` file.](https://github.com/AeriaVelocity/toml2make/blob/main/cproject.toml)
+
+Schema versions before v1.0.0 will not support backwards compatibility due to
+immaturity, but backwards compatibility of schema versions past v1.0.0 is
+planned.
+
+(I have no idea what "schema" means but based on my experience with JSON, I have
+a pretty good idea)
+
 ## Licence
 
 TOML To Makefile is distributed under the [MIT License](LICENSE).
