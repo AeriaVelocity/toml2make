@@ -56,16 +56,14 @@ toml2make # Convert the `cproject.toml` file to a Makefile
 make      # Build the C project
 ```
 
-To skip the additional `make` command:
-
-```bash
-toml2make -b # Convert the `cproject.toml` file to a Makefile and automatically run `make`
-```
-
 If you wish, you can add `Makefile` to your `.gitignore` file, since `toml2make`
 will generate a `Makefile` from your `cproject.toml` anyway.
 
 ## Options
+
+> [!WARNING]
+> These are not implemented yet. Do not use them expecting them to work until
+> at least toml2make version 1.0.0 is released.
 
 * `-b`/`--build`: Build the C project automatically.
 * `-r`/`--run`: Build and run the C project automatically.
