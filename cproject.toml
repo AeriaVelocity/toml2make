@@ -1,5 +1,5 @@
 [schema]
-version = "1.0.0"
+version = "1.1.0"
 
 [project]
 name = "toml2make"
@@ -10,15 +10,11 @@ author = "Arsalan 'Aeri' Kazmi"
 
 [compiler]
 cc = "gcc"
-cflags = [
-    "-Wall",
-    "-Wextra",
-    "-Wpedantic",
-]
+cflags = "-Wall -Wextra -Wpedantic"
 cversion = "c17"
 
 [build]
-prefix = "$HOME/.local"
+prefix = "~/.local"
 
 [makefile]
 out = "Makefile"
