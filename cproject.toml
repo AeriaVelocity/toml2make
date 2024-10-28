@@ -1,5 +1,6 @@
-[schema]
-version = "1.1.0"
+[toml2make]
+# This version number is for the toml2make SCHEMA, NOT toml2make itself.
+version = "1.2.0"
 
 [project]
 name = "toml2make"
@@ -18,4 +19,3 @@ prefix = "~/.local"
 
 [makefile]
 out = "Makefile"
-log = "toml2make.log"
