@@ -15,23 +15,30 @@ Because:
 ## Example `cproject.toml` Format
 
 ```toml
+[toml2make]
+# This version number is for the toml2make SCHEMA, NOT toml2make itself.
+version = "0.3.0"
+
 [project]
 name = "c-project"
 version = "0.1.0"
 license = "MIT"
-description = "A sample C project to test TOML To Makefile."
+description = "A project written in C."
+author = "Some Guy"
 
 [compiler]
 cc = "gcc"
-cflags = [
-    "-Wall",
-    "-Wextra",
-    "-Wpedantic",
-]
+cflags = "-Wall -Wextra -Wpedantic"
 cversion = "c17"
 
 [build]
-prefix = "$HOME/.local"
+prefix = "~/.local"
+build = "build"
+src = "src"
+bin = "bin"
+
+[makefile]
+out = "Makefile"
 ```
 
 ## Installation
