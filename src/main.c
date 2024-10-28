@@ -86,5 +86,85 @@ If it exists somewhere else, try `%s path/to/cproject.toml`.\n", argv[0]);
 
     printf("Using %s.\n", toml_file_path);
 
+    char line[MAX_LINE_LENGTH];
+
+    char section[MAX_VALUE_LENGTH];
+
+    char schema_version[MAX_VALUE_LENGTH] = "";
+
+    char project_name[MAX_VALUE_LENGTH];
+    char project_version[MAX_VALUE_LENGTH];
+    char project_license[MAX_VALUE_LENGTH];
+    char project_description[MAX_VALUE_LENGTH];
+    char project_author[MAX_VALUE_LENGTH];
+
+    char compiler_cc[MAX_VALUE_LENGTH] = "gcc";
+    int num_cflags = 0;
+    char *compiler_cflags[MAX_VALUE_LENGTH] = {};
+    char compiler_cversion[MAX_VALUE_LENGTH] = "c11";
+
+    char build_prefix[MAX_VALUE_LENGTH] = "/usr/local";
+    char build_src[MAX_VALUE_LENGTH] = "src";
+    char build_dir[MAX_VALUE_LENGTH] = "build";
+    char build_bin[MAX_VALUE_LENGTH] = "bin";
+
+    char makefile_out[MAX_VALUE_LENGTH] = "Makefile";
+    char makefile_log[MAX_VALUE_LENGTH] = "toml2make.log";
+
+    FILE *fp = fopen(toml_file_path, "r");
+    if (!fp) {
+        fprintf(stderr, "Failed to open %s.\n", toml_file_path);
+        free(toml_file_path);
+        return EXIT_FAILURE;
+    }
+
+    while (fgets(line, MAX_LINE_LENGTH, fp)) {
+        trim_whitespace(line);
+
+        if (line[0] == '#') {
+            continue;
+        }
+
+        if (strstr(line, "[") != NULL) {
+            sscanf(line, "[%[^]]", section);
+            continue;
+        }
+
+        if (strcmp(section, "schema") == 0) {
+            if (strstr(line, "version =") != NULL) {
+                sscanf(line, "version = \"%[^\"]\"", schema_version);
+                printf("Using schema version %s.\n", schema_version);
+                continue;
+            }
+            if (strcmp(schema_version, "") == 0) {
+                fprintf(stderr, "No schema version found in %s.\n", toml_file_path);
+            }
+            continue;
+        }
+
+        if (strcmp(section, "project") == 0) {
+            if (strstr(line, "name =") != NULL) {
+                sscanf(line, "name = \"%[^\"]\"", project_name);
+            }
+
+            // TODO
+        }
+
+        if (strcmp(section, "compiler") == 0) {
+            // TODO
+        }
+
+        if (strcmp(section, "build") == 0) {
+            // TODO
+        }
+
+        if (strcmp(section, "makefile") == 0) {
+            // TODO
+        }
+    }
+
+    fclose(fp);
+    free(toml_file_path);
+
     return EXIT_SUCCESS;
 }

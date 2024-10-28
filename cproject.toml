@@ -1,8 +1,13 @@
+[schema]
+version = "1.0.0"
+
 [project]
 name = "toml2make"
 version = "0.1.0"
 license = "MIT"
 description = "A tool to convert TOML files to Makefiles, for C/C++ projects."
+author = "Arsalan 'Aeri' Kazmi"
+
 [compiler]
 cc = "gcc"
 cflags = [
