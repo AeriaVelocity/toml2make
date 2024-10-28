@@ -1,6 +1,6 @@
 [toml2make]
 # This version number is for the toml2make SCHEMA, NOT toml2make itself.
-version = "0.3.0"
+version = "0.4.0"
 
 [project]
 name = "toml2make"
@@ -15,7 +15,7 @@ cflags = "-Wall -Wextra -Wpedantic"
 cversion = "gnu17"
 
 [build]
-prefix = "~/.local"
+install = "~/.local/bin/"
 
 [makefile]
 out = "Makefile"
