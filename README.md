@@ -17,7 +17,7 @@ Because:
 ```toml
 [toml2make]
 # This version number is for the toml2make SCHEMA, NOT toml2make itself.
-version = "0.3.0"
+version = "0.4.0"
 
 [project]
 name = "c-project"
@@ -33,7 +33,7 @@ cflags = "-Wall -Wextra -Wpedantic"
 cversion = "c17"
 
 [build]
-prefix = "~/.local"
+install = "~/.local/bin"
 build = "build"
 src = "src"
 bin = "bin"
