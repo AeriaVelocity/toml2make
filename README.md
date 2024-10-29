@@ -29,28 +29,33 @@ or anything else.
 
 > [!NOTE]
 > In a future version, this tool will be able to generate a project structure
-> including a `cproject.toml` for you with the `toml2make init` command.
+> including a `cproject.toml` for you with the `toml2make --init` command.
 
 Populate the file with data, like so:
 
 ```toml
-[toml2make]
-version = "0.3.0"
+[toml2make.schema]
+version = "0.5.0"
 
 [project]
 name = "your-project-name"
 version = "0.1.0"
-license = "ISC" # or whatever licence you're using
+license = "ISC"
 description = "A short description of your project."
 author = "Your Name"
 
 [compiler]
 cc = "gcc"
+# Change to "g++" for C++ projects
 cflags = "-Wall"
 cversion = "c11"
-```
+# Change to "c++11" for C++ projects; change to "gnu11` for GNU C (not ISO C) projects
 
-For a more complete sample, refer to the [example above.](#example-cprojecttoml-format)
+[options]
+file_extension = "c"
+# Change to "cpp" for C++ projects
+use_include = true
+```
 
 When the file is created, create your source directory at `src`. Then, run
 the following commands:
