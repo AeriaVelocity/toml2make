@@ -12,36 +12,6 @@ Because:
 * I really *don't* like writing a properly-structured Makefile every time.
 * I really *really* don't like CMake.
 
-## Example `cproject.toml` Format
-
-```toml
-[toml2make]
-# This version number is for the toml2make SCHEMA, NOT toml2make itself.
-version = "0.4.0"
-
-[project]
-name = "c-project"
-version = "0.1.0"
-license = "MIT"
-description = "A project written in C."
-author = "Some Guy"
-
-[compiler]
-# If you're building a C++ project instead, replace `gcc` with `g++` and `c17` with `c++17`.
-cc = "gcc"
-cflags = "-Wall -Wextra -Wpedantic"
-cversion = "c17"
-
-[build]
-install = "~/.local/bin"
-build = "build"
-src = "src"
-bin = "bin"
-
-[makefile]
-out = "Makefile"
-```
-
 ## Installation
 
 To compile, simply run `make` in the root directory of the project.
