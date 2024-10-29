@@ -1,10 +1,9 @@
-[toml2make]
-# This version number is for the toml2make SCHEMA, NOT toml2make itself.
-version = "0.4.0"
+[toml2make.schema]
+version = "0.5.0"
 
 [project]
 name = "toml2make"
-version = "0.2.0"
+version = "0.3.0"
 license = "MIT"
 description = "A tool to convert TOML files to Makefiles, for C/C++ projects."
 author = "Arsalan 'Aeri' Kazmi"
@@ -14,8 +13,9 @@ cc = "gcc"
 cflags = "-Wall -Wextra -Wpedantic"
 cversion = "gnu17"
 
-[build]
+[paths]
 install = "~/.local/bin/"
 
-[makefile]
-out = "Makefile"
+[options]
+file_extension = "c"
+use_include = true

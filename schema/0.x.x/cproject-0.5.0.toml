@@ -1,0 +1,30 @@
+# This is the current version of the cproject.toml schema.
+# However, this is still a 0.x.x schema and is subject to change - in the event
+# it's supplanted by a future version, it will be marked as unsupported.
+
+[toml2make.schema]
+version = "0.5.0"
+
+[project]
+name = "toml2make"
+version = "0.1.0"
+license = "MIT"
+description = "A tool to convert TOML files to Makefiles, for C/C++ projects."
+author = "Arsalan 'Aeri' Kazmi"
+
+[compiler]
+cc = "gcc"
+cflags = "-Wall -Wextra -Wpedantic"
+cversion = "gnu17"
+
+[options]
+file_extension = "c"
+use_include = true
+
+[paths]
+build = "build"
+src = "src"
+bin = "bin"
+include = "include"
+install = "~/.local/bin/"
+makefile = "Makefile"
