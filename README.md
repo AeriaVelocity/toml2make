@@ -1,7 +1,7 @@
 # TOML To Makefile
 
-TOML To Makefile is a tool written in C to convert `cproject.toml` files to
-Makefiles for C/C++ projects.
+TOML To Makefile (`toml2make`) is a tool written in C to convert `cproject.toml`
+files to Makefiles for C/C++ projects.
 
 ## Why?
 
