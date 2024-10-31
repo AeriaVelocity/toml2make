@@ -4,7 +4,7 @@ version = "0.5.1"
 [project]
 name = "toml2make"
 version = "0.3.0"
-license = "MIT"
+license = "MIT OR GPL-3.0-or-later"
 description = "A tool to convert TOML files to Makefiles, for C/C++ projects."
 author = "Arsalan 'Aeri' Kazmi"
 
