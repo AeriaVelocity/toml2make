@@ -3,14 +3,36 @@
 TOML To Makefile (`toml2make`) is a tool written in C to convert `cproject.toml`
 files to Makefiles for C/C++ projects.
 
-## Why?
+It's structured after the Cargo package manager for Rust, with the
+`cproject.toml` intentionally resembling `Cargo.toml`.
 
-Because:
+TOML (Tom's Obvious, Minimal Language) is a simple configuration file format for
+structured data, while Makefiles are a text-based format for specifying
+compilation and installation instructions for the `make` tool, typically for
+C/C++ projects.
 
-* I'm a Rust fanboy.
-* I really like TOML.
-* I really *don't* like writing a properly-structured Makefile every time.
-* I really *really* don't like CMake.
+While Makefiles are very good at what they do, they can be a pain to write from
+scratch sometimes.
+
+TOML To Makefile aims to alleviate this by leveraging the TOML format
+popularised by Rust, allowing C/C++ programmers to use a clearer and simpler
+build configuration for their projects.
+
+## Future Plans
+
+### 0.x.x
+
+* Support for project creation (`toml2make --new`) and initialisation (`toml2make --init`)
+* Verbose output (`toml2make -v`/`toml2make --verbose`)
+* Custom `make` targets other than the usual `all`, `clean`, and `install`
+* Optionally split `[compiler]` into `[compiler.debug]` and `[compiler.release]`
+
+### 1.x.x
+
+* `cproject.toml` schema backwards compatibility
+* Dependency management (like Cargo)
+* Integration with other tools (such as CMake)
+  * Possibly export to CMakeLists.txt
 
 ## Installation
 
@@ -35,7 +57,7 @@ Populate the file with data, like so:
 
 ```toml
 [toml2make.schema]
-version = "0.5.0"
+version = "0.5.1"
 
 [project]
 name = "your-project-name"
@@ -45,15 +67,12 @@ description = "A short description of your project."
 author = "Your Name"
 
 [compiler]
-cc = "gcc"
-# Change to "g++" for C++ projects
+cc = "gcc" # Change to "g++" for C++ projects
 cflags = "-Wall"
-cversion = "c11"
-# Change to "c++11" for C++ projects; change to "gnu11` for GNU C (not ISO C) projects
+cversion = "c11" # Change to "c++11" for C++ projects; change to "gnu11` for GNU C (not ISO C) projects
 
 [options]
-file_extension = "c"
-# Change to "cpp" for C++ projects
+file_extension = "c" # Change to "cpp" for C++ projects
 use_include = true
 ```
 
@@ -68,24 +87,10 @@ make      # Build the C project
 If you wish, you can add `Makefile` to your `.gitignore` file, since `toml2make`
 will generate a `Makefile` from your `cproject.toml` anyway.
 
-## Options
-
-> [!WARNING]
-> These are not implemented yet. Do not use them expecting them to work until
-> at least toml2make version 1.0.0 is released.
-
-* `-b`/`--build`: Build the C project automatically.
-* `-r`/`--run`: Build and run the C project automatically.
-* `-c`/`--clean`: Remove an existing Makefile and all generated files before generating the Makefile.
-  Combine with `-b` or `-r` to remove the Makefile after building/running.
-* `-v`/`--verbose`: Enable verbose output.
-* `--version`: Print the TOML To Makefile version.
-
-For example, `toml2make -rcv` will automatically build and run the C project and remove the Makefile when done, all with verbose output.
-
 ## Schema
 
-TOML To Makefile's schema is present at [this own project's `cproject.toml` file.](https://github.com/AeriaVelocity/toml2make/blob/main/cproject.toml)
+TOML To Makefile's `cproject.json` schema is present inside the
+[`schema/0.x.x/cproject-0.5.1.toml` file](https://github.com/AeriaVelocity/toml2make/blob/main/schema/0.x.x/cproject-0.5.1.toml).
 
 For a full list of schema versions, see [this project's `schema/` directory.](https://github.com/AeriaVelocity/toml2make/tree/main/schema)
 
@@ -93,9 +98,9 @@ Schema versions before v1.0.0 will not support backwards compatibility due to
 immaturity, but backwards compatibility of schema versions past v1.0.0 is
 planned.
 
-(I have no idea what "schema" means but based on my experience with JSON, I have
-a pretty good idea)
-
 ## Licence
 
-TOML To Makefile is distributed under the [MIT License](LICENSE).
+TOML To Makefile is dual-licensed under the
+[MIT](https://github.com/AeriaVelocity/toml2make/blob/main/LICENSE.MIT) and
+[GNU GPL 3.0](https://github.com/AeriaVelocity/toml2make/blob/main/LICENSE.GPL-3.0)
+licences.
