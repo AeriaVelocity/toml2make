@@ -2,10 +2,10 @@
 # DO NOT use this schema in any current projects.
 
 [project]
-name = "toml2make"
+name = "your-project-name"
 version = "0.1.0"
-license = "MIT"
-description = "A tool to convert TOML files to Makefiles, for C/C++ projects."
+license = "ISC"
+description = "A brief description of your project."
 [compiler]
 cc = "gcc"
 cflags = [

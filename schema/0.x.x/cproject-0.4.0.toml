@@ -5,16 +5,16 @@
 version = "0.4.0"
 
 [project]
-name = "toml2make"
+name = "your-project-name"
 version = "0.1.0"
-license = "MIT"
-description = "A tool to convert TOML files to Makefiles, for C/C++ projects."
-author = "Arsalan 'Aeri' Kazmi"
+license = "ISC"
+description = "A brief description of your project."
+author = "Your Name"
 
 [compiler]
 cc = "gcc"
 cflags = "-Wall -Wextra -Wpedantic"
-cversion = "gnu17"
+cversion = "c17"
 
 [build]
 install = "~/.local/bin/"
