@@ -20,19 +20,26 @@ build configuration for their projects.
 
 ## Future Plans
 
-### 0.x.x
+### Program
 
 * Support for project creation (`toml2make --new`) and initialisation (`toml2make --init`)
 * Verbose output (`toml2make -v`/`toml2make --verbose`)
+* Dependency management (like Cargo)
+* Proper Windows support
+* Integration with other tools (such as CMake)
+  * Possibly export to CMakeLists.txt
+
+### `cproject.toml` Schema
+
+* Backwards compatibility
 * Custom `make` targets other than the usual `all`, `clean`, and `install`
 * Optionally split `[compiler]` into `[compiler.debug]` and `[compiler.release]`
 
-### 1.x.x
+### Extra
 
-* `cproject.toml` schema backwards compatibility
-* Dependency management (like Cargo)
-* Integration with other tools (such as CMake)
-  * Possibly export to CMakeLists.txt
+* Submission to package repositories (Fedora, Debian, Arch AUR, Homebrew)
+* AppImage package
+* Windows installer
 
 ## Installation
 
