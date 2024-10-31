@@ -1,5 +1,6 @@
-# This is an UNSUPPORTED cproject.toml schema, kept here for posterity.
-# DO NOT use this schema in any current projects.
+# There is a more recent minor version of this schema.
+# This schema will still work but is not recommended -
+# please use the newer version.
 
 [toml2make.schema]
 version = "0.5.0"
