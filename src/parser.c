@@ -41,10 +41,10 @@ int parse_toml_config(char* file_path, ProjectConfig *config) {
             continue;
         }
 
-        if (strcmp(section, "toml2make.schema") == 0) {
+        if (strcmp(section, "cproject.toml") == 0) {
             if (strstr(line, "version =") != NULL) {
                 sscanf(line, "version = \"%[^\"]\"", config->schema_version);
-                printf("Using toml2make schema version %s.\n", config->schema_version);
+                printf("Using cproject schema version %s.\n", config->schema_version);
             }
             continue;
         }

@@ -1,5 +1,5 @@
-[toml2make.schema]
-version = "0.5.0"
+[cproject.toml]
+version = "0.5.1"
 
 [project]
 name = "toml2make"

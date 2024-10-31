@@ -1,8 +1,9 @@
-# This is an UNSUPPORTED cproject.toml schema, kept here for posterity.
-# DO NOT use this schema in any current projects.
+# This is the current version of the cproject.toml schema.
+# However, this is still a 0.x.x schema and is subject to change - in the event
+# it's supplanted by a future version, it will be marked as unsupported.
 
-[toml2make.schema]
-version = "0.5.0"
+[cproject.toml]
+version = "0.5.1"
 
 [project]
 name = "your-project-name"

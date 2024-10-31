@@ -2,6 +2,8 @@
 #include "config.h"
 
 void init_default_config(ProjectConfig *config) {
+    strncpy(config->schema_version, "0.5.1", MAX_VALUE_LENGTH);
+
     strncpy(config->project_name, "my-c-project", MAX_VALUE_LENGTH);
     strncpy(config->project_version, "0.1.0", MAX_VALUE_LENGTH);
     strncpy(config->project_license, "ISC", MAX_VALUE_LENGTH);
