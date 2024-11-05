@@ -6,10 +6,14 @@
 #include "utils.h"
 
 int main(int argc, char **argv) {
+    int run_after_compile = 0;
     if (argc > 1) {
         if (strcmp(argv[1], "--init") == 0) {
             create_new_cproject();
             return EXIT_SUCCESS;
+        }
+        else if (strcmp(argv[1], "--run") == 0) {
+            run_after_compile = 1;
         }
     }
 
@@ -35,5 +39,20 @@ If it exists somewhere else, try `%s path/to/cproject.toml`.\n", argv[0]);
 
     free(toml_file_path);
     printf("Makefile generated at %s.\n", config.paths_makefile);
+
+    if (run_after_compile) {
+        printf("Running the program...\n");
+        int status = system("make run");
+        if (status != 0) {
+            fprintf(stderr, "Failed to run the program. Removing Makefile.\n");
+            remove(config.paths_makefile);
+            return EXIT_FAILURE;
+        }
+    }
+
+    printf("Removing Makefile.\n");
+    remove(config.paths_makefile);
+
+    printf("Done.\n");
     return EXIT_SUCCESS;
 }
