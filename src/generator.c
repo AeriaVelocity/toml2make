@@ -6,6 +6,21 @@
 #include "utils.h"
 #include "platform.h"
 
+#ifdef _WIN32
+    #include <direct.h>
+    #include <windows.h>
+    #include <fileapi.h>
+    int create_directory(const char *path) {
+        return CreateDirectoryA(path, NULL);
+    }
+#else
+    #include <unistd.h>
+    #include <sys/stat.h>
+    int create_directory(const char *path) {
+        return mkdir(path, 0777);
+    }
+#endif
+
 char **ask_project_details() {
     char *project_name = malloc(MAX_VALUE_LENGTH);
     char *project_license = malloc(MAX_VALUE_LENGTH);
@@ -84,9 +99,9 @@ char **ask_project_details() {
     details[1] = project_license;
     details[2] = project_description;
     details[3] = project_author;
-    details[4] = is_cpp == 0 ? "c" : "cpp";
-    details[5] = is_cpp == 0 ? "gcc" : "g++";
-    details[6] = is_cpp == 0 ? "c11" : "c++11";
+    details[4] = strdup(is_cpp == 0 ? "c" : "cpp");
+    details[5] = strdup(is_cpp == 0 ? "gcc" : "g++");
+    details[6] = strdup(is_cpp == 0 ? "c11" : "c++11");
     return details;
 }
 
@@ -141,10 +156,100 @@ int create_new_cproject() {
 
     generate_cproject(&config);
 
-    printf("cproject.toml generated at %s.\n", config.paths_src);
-    printf("Run `toml2make` to generate the Makefile.\n");
+    printf("Created project %s.\n", name);
+    printf("Run `make` to build the project.\n");
+    printf("If `cproject.toml` is changed, run `toml2make` again.\n");
+
+    free(current_dir);
+    free(name);
+    free(license);
+    free(description);
+    free(author);
+    free(language);
+    free(compiler);
+    free(cversion);
 
     return 1;
+}
+
+void create_directory_structure(const ProjectConfig *config) {
+    // Create .gitignore
+    FILE *fGitignore = fopen(".gitignore", "w");
+    if (!fGitignore) {
+        fprintf(stderr, "Failed to create .gitignore.\n");
+        return;
+    }
+    fprintf(fGitignore, "Makefile\n");
+    fclose(fGitignore);
+    printf("Created .gitignore.\n");
+
+    // Create README.md
+    FILE *fReadme = fopen("README.md", "w");
+    if (!fReadme) {
+        fprintf(stderr, "Failed to create README.md.\n");
+        return;
+    }
+    fprintf(fReadme, "# %s\n\n", config->project_name);
+    fprintf(fReadme, "%s\n\n", config->project_description);
+    fprintf(fReadme, "## License\n\n%s\n\n", config->project_license);
+    fclose(fReadme);
+    printf("Created README.md.\n");
+
+    // Create directories
+    /// src
+    if (create_directory("src") != 0) {
+        fprintf(stderr, "Failed to create src directory.\n");
+        return;
+    }
+    printf("Created src directory.\n");
+
+    /// include
+    if (config->options_include) {
+        if (create_directory("include") != 0) {
+            fprintf(stderr, "Failed to create include directory.\n");
+            return;
+        }
+        printf("Created include directory.\n");
+    }
+
+    // Create main.c or main.cpp
+    if (strcmp(config->options_lang, "c") == 0) {
+        FILE *fMain = fopen("src/main.c", "w");
+        if (!fMain) {
+            fprintf(stderr, "Failed to create main.c.\n");
+            return;
+        }
+        fprintf(fMain, "#include <stdio.h>\n\n");
+        fprintf(fMain, "int main(int argc, char **argv) {\n");
+        fprintf(fMain, "    printf(\"Hello, World!\\n\");\n");
+        fprintf(fMain, "    return 0;\n");
+        fprintf(fMain, "}\n");
+        fclose(fMain);
+        printf("Created main.c.\n");
+    }
+    else if (strcmp(config->options_lang, "cpp") == 0) {
+        FILE *fMain = fopen("src/main.cpp", "w");
+        if (!fMain) {
+            fprintf(stderr, "Failed to create main.cpp.\n");
+            return;
+        }
+        fprintf(fMain, "#include <iostream>\n\n");
+        fprintf(fMain, "int main(int argc, char **argv) {\n");
+        fprintf(fMain, "    std::cout << \"Hello, World!\\n\";\n");
+        fprintf(fMain, "    return 0;\n");
+        fprintf(fMain, "}\n");
+        fclose(fMain);
+        printf("Created main.cpp.\n");
+    }
+    else {
+        fprintf(stderr, "Invalid language '%s'.\n", config->options_lang);
+        fprintf(stderr, "You should never see this message.\n");
+        return;
+    }
+
+    // Create Makefile
+    generate_makefile(config);
+    printf("Generated Makefile.\n");
 }
 
 void generate_cproject(const ProjectConfig *config) {
@@ -184,6 +289,15 @@ void generate_cproject(const ProjectConfig *config) {
     fprintf(fP, "makefile = \"%s\"\n", config->paths_makefile);
 
     fclose(fP);
+
+    printf("cproject.toml generated at %s.\n", config->paths_src);
+    printf("Creating project structure.\n");
+
+    char *cwd = get_cwd(NULL, 0);
+    if (cwd) {
+        create_directory_structure(config);
+        free(cwd);
+    }
 }
 
 void generate_makefile(const ProjectConfig *config) {

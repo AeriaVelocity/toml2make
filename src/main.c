@@ -9,6 +9,7 @@ int main(int argc, char **argv) {
     if (argc > 1) {
         if (strcmp(argv[1], "--init") == 0) {
             create_new_cproject();
+            return EXIT_SUCCESS;
         }
     }
 
