@@ -1,7 +1,190 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include "generator.h"
+#include "utils.h"
+#include "platform.h"
+
+char **ask_project_details() {
+    char *project_name = malloc(MAX_VALUE_LENGTH);
+    char *project_license = malloc(MAX_VALUE_LENGTH);
+    char *project_description = malloc(MAX_VALUE_LENGTH);
+    char *project_author = malloc(MAX_VALUE_LENGTH);
+    int is_cpp = -1;
+
+    // Get project name
+    printf("What's the name of your project?\n(default: my-c-project): ");
+    if (!fgets(project_name, MAX_VALUE_LENGTH, stdin)) {
+        fprintf(stderr, "Failed to read project name.\n");
+    }
+    project_name[strcspn(project_name, "\n")] = '\0';  // Remove newline
+    if (strlen(project_name) == 0) {
+        strncpy(project_name, "my-c-project", MAX_VALUE_LENGTH);
+    }
+
+    // Get project license
+    printf("What license are you using for your project?\n(default: ISC): ");
+    if (!fgets(project_license, MAX_VALUE_LENGTH, stdin)) {
+        fprintf(stderr, "Failed to read project license.\n");
+    }
+    project_license[strcspn(project_license, "\n")] = '\0';  // Remove newline
+    if (strlen(project_license) == 0) {
+        strncpy(project_license, "ISC", MAX_VALUE_LENGTH);
+    }
+
+    // Get project description
+    printf("Give a short description of your project.\n(default: A sample C project): ");
+    if (!fgets(project_description, MAX_VALUE_LENGTH, stdin)) {
+        fprintf(stderr, "Failed to read project description.\n");
+    }
+    project_description[strcspn(project_description, "\n")] = '\0';  // Remove newline
+    if (strlen(project_description) == 0) {
+        strncpy(project_description, "A sample C project", MAX_VALUE_LENGTH);
+    }
+
+    // Get project author
+    printf("Who's the author of this project?\n(default: Your Name): ");
+    if (!fgets(project_author, MAX_VALUE_LENGTH, stdin)) {
+        fprintf(stderr, "Failed to read project author.\n");
+    }
+    project_author[strcspn(project_author, "\n")] = '\0';  // Remove newline
+    if (strlen(project_author) == 0) {
+        strncpy(project_author, "Your Name", MAX_VALUE_LENGTH);
+    }
+
+    // Get project type (C or C++)
+    char temp_buffer[MAX_VALUE_LENGTH];
+    while (is_cpp == -1) {
+        printf("Is this a C or C++ project?\n(default: C): ");
+        if (!fgets(temp_buffer, MAX_VALUE_LENGTH, stdin)) {
+            fprintf(stderr, "Failed to read project type.\n");
+        }
+        temp_buffer[strcspn(temp_buffer, "\n")] = '\0';  // Remove newline
+
+        if (strcasecmp(temp_buffer, "C") == 0) {
+            is_cpp = 0;
+        } else if (strcasecmp(temp_buffer, "C++") == 0 || strcasecmp(temp_buffer, "CPP") == 0) {
+            is_cpp = 1;
+        } else if (strlen(temp_buffer) == 0) {
+            is_cpp = 0;  // Default to C if input is empty
+        } else {
+            printf("Invalid input. Please specify C or C++.\n");
+        }
+    }
+
+    // Store project details
+    char **details = malloc(7 * sizeof(char*));
+    if (!details) {
+        fprintf(stderr, "Failed to allocate memory for project details.\n");
+        return NULL;       
+    }
+
+    details[0] = project_name;
+    details[1] = project_license;
+    details[2] = project_description;
+    details[3] = project_author;
+    details[4] = is_cpp == 0 ? "c" : "cpp";
+    details[5] = is_cpp == 0 ? "gcc" : "g++";
+    details[6] = is_cpp == 0 ? "c11" : "c++11";
+    return details;
+}
+
+
+int create_new_cproject() {
+    char *current_dir = get_cwd(NULL, 0);
+    if (!current_dir) {
+        fprintf(stderr, "Failed to get current directory.\n");
+        return -1;
+    }
+
+    if (!directory_is_empty(current_dir)) {
+        fprintf(stderr, "Will not initialise in a non-empty directory.\n");
+        free(current_dir);
+        return -1;
+    }
+
+    char **details = ask_project_details();
+    if (!details) {
+        free(current_dir);
+        return -1;
+    }
+    for (int i = 0; i < 4; i++) {
+        if (!details[i]) {
+            fprintf(stderr, "Failed to read project details.\n");
+            free(current_dir);
+            free(details);
+            return -1;
+        }
+    }
+
+    char *name = details[0];
+    char *license = details[1];
+    char *description = details[2];
+    char *author = details[3];
+    char *language = details[4];
+    char *compiler = details[5];
+    char *cversion = details[6];
+    free(details);
+
+    ProjectConfig config;
+    init_default_config(&config);
+
+    strncpy(config.project_name, name, MAX_VALUE_LENGTH);
+    strncpy(config.project_license, license, MAX_VALUE_LENGTH);
+    strncpy(config.project_description, description, MAX_VALUE_LENGTH);
+    strncpy(config.project_author, author, MAX_VALUE_LENGTH);
+
+    strncpy(config.compiler_cc, compiler, MAX_VALUE_LENGTH);
+    strncpy(config.compiler_cversion, cversion, MAX_VALUE_LENGTH);
+    strncpy(config.options_lang, language, MAX_VALUE_LENGTH);
+
+    generate_cproject(&config);
+
+    printf("cproject.toml generated at %s.\n", config.paths_src);
+    printf("Run `toml2make` to generate the Makefile.\n");
+
+    return 1;
+}
+
+void generate_cproject(const ProjectConfig *config) {
+    FILE *fP = fopen("cproject.toml", "w");
+    if (!fP) {
+        fprintf(stderr, "Failed to create cproject.toml.\n");
+        return;
+    }
+
+    fprintf(fP, "# This cproject.toml file was automatically generated by TOML To Makefile.\n");
+    fprintf(fP, "\n");
+    fprintf(fP, "[toml2make.schema]\n");
+    fprintf(fP, "version = \"%s\"\n", config->schema_version);
+    fprintf(fP, "\n");
+    fprintf(fP, "[project]\n");
+    fprintf(fP, "name = \"%s\"\n", config->project_name);
+    fprintf(fP, "version = \"%s\"\n", config->project_version);
+    fprintf(fP, "license = \"%s\"\n", config->project_license);
+    fprintf(fP, "description = \"%s\"\n", config->project_description);
+    fprintf(fP, "author = \"%s\"\n", config->project_author);
+    fprintf(fP, "\n");
+    fprintf(fP, "[compiler]\n");
+    fprintf(fP, "cc = \"%s\"\n", config->compiler_cc);
+    fprintf(fP, "cflags = \"%s\"\n", config->compiler_cflags);
+    fprintf(fP, "cversion = \"%s\"\n", config->compiler_cversion);
+    fprintf(fP, "\n");
+    fprintf(fP, "[options]\n");
+    fprintf(fP, "file_extension = \"%s\"\n", config->options_lang);
+    fprintf(fP, "use_include = \"%s\"\n", config->options_include ? "true" : "false");
+    fprintf(fP, "\n");
+    fprintf(fP, "[paths]\n");
+    fprintf(fP, "build = \"%s\"\n", config->paths_build);
+    fprintf(fP, "src = \"%s\"\n", config->paths_src);
+    fprintf(fP, "bin = \"%s\"\n", config->paths_bin);
+    fprintf(fP, "include = \"%s\"\n", config->paths_include);
+    fprintf(fP, "install = \"%s\"\n", config->paths_install);
+    fprintf(fP, "makefile = \"%s\"\n", config->paths_makefile);
+
+    fclose(fP);
+}
 
 void generate_makefile(const ProjectConfig *config) {
     FILE *fExists = fopen(config->paths_makefile, "r");

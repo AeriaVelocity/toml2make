@@ -6,25 +6,25 @@
 version = "0.5.1"
 
 [project]
-name = "your-project-name"
+name = "your-project-name" # This should be in kebab-case format.
 version = "0.1.0"
-license = "ISC"
+license = "ISC" # Replace with the SPDX licence identifier for your project.
 description = "A brief description of your project."
 author = "Your Name"
 
 [compiler]
-cc = "gcc"
-cflags = "-Wall -Wextra -Wpedantic"
-cversion = "c17"
+cc = "gcc" # Replace with `g++` for C++ projects, or `clang` if you use Clang.
+cflags = "-Wall -Wextra -Wpedantic" # Add any additional compiler flags you need.
+cversion = "c17" # Replace with `c++17` for C++ projects, or `gnu17` if you need GNU extensions.
 
 [options]
-file_extension = "c"
-use_include = true
+file_extension = "c" # Replace with `cpp` for C++ projects.
+use_include = true # Set to `false` if you don't use an `include` directory.
 
 [paths]
-build = "build"
+build = "build" 
 src = "src"
 bin = "bin"
 include = "include"
-install = "~/.local/bin/"
+install = "~/.local/bin/" # Replace with `/usr/local/bin/` if you need system-wide installation.
 makefile = "Makefile"

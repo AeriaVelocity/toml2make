@@ -1,10 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "parser.h"
 #include "generator.h"
 #include "utils.h"
 
 int main(int argc, char **argv) {
+    if (argc > 1) {
+        if (strcmp(argv[1], "--init") == 0) {
+            create_new_cproject();
+        }
+    }
+
     char *toml_file_path = get_toml_file_path(argc, argv);
     if (!toml_file_path) {
         fprintf(stderr, "No cproject.toml found in the current working directory.\n\
