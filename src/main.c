@@ -7,6 +7,7 @@
 
 int main(int argc, char **argv) {
     int run_after_compile = 0;
+    int clean_after_compile = 0;
     if (argc > 1) {
         if (strcmp(argv[1], "--init") == 0) {
             create_new_cproject();
@@ -14,6 +15,9 @@ int main(int argc, char **argv) {
         }
         else if (strcmp(argv[1], "--run") == 0) {
             run_after_compile = 1;
+        }
+        else if (strcmp(argv[1], "--clean") == 0) {
+            clean_after_compile = 1;
         }
     }
 
@@ -45,6 +49,19 @@ Run `toml2make --init` to initialise a new project.\n");
         int status = system("make run");
         if (status != 0) {
             fprintf(stderr, "Failed to run the program. Removing Makefile.\n");
+            remove(config.paths_makefile);
+            return EXIT_FAILURE;
+        }
+
+        printf("Removing Makefile.\n");
+        remove(config.paths_makefile);
+    }
+
+    else if (clean_after_compile) {
+        printf("Cleaning the project directory...\n");
+        int status = system("make clean");
+        if (status != 0) {
+            fprintf(stderr, "Failed to clean the project directory. Removing Makefile.\n");
             remove(config.paths_makefile);
             return EXIT_FAILURE;
         }
