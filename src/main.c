@@ -6,18 +6,18 @@
 #include "utils.h"
 
 int main(int argc, char **argv) {
-    int run_after_compile = 0;
-    int clean_after_compile = 0;
+    int run_after_generate = 0;
+    int clean_after_generate = 0;
     if (argc > 1) {
         if (strcmp(argv[1], "--init") == 0) {
             create_new_cproject();
             return EXIT_SUCCESS;
         }
         else if (strcmp(argv[1], "--run") == 0) {
-            run_after_compile = 1;
+            run_after_generate = 1;
         }
         else if (strcmp(argv[1], "--clean") == 0) {
-            clean_after_compile = 1;
+            clean_after_generate = 1;
         }
     }
 
@@ -44,7 +44,7 @@ Run `toml2make --init` to initialise a new project.\n");
     free(toml_file_path);
     printf("Makefile generated at %s.\n", config.paths_makefile);
 
-    if (run_after_compile) {
+    if (run_after_generate) {
         printf("Running the program...\n");
         int status = system("make run");
         if (status != 0) {
@@ -57,7 +57,7 @@ Run `toml2make --init` to initialise a new project.\n");
         remove(config.paths_makefile);
     }
 
-    else if (clean_after_compile) {
+    else if (clean_after_generate) {
         printf("Cleaning the project directory...\n");
         int status = system("make clean");
         if (status != 0) {
