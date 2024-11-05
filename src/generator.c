@@ -41,7 +41,7 @@ char **ask_project_details() {
     // Get project license
     printf("What licence are you using for your project?\n(default: ISC): ");
     if (!fgets(project_license, MAX_VALUE_LENGTH, stdin)) {
-        fprintf(stderr, "Failed to read project license.\n");
+        fprintf(stderr, "Failed to read project licence.\n");
     }
     project_license[strcspn(project_license, "\n")] = '\0';  // Remove newline
     if (strlen(project_license) == 0) {
