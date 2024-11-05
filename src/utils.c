@@ -28,7 +28,7 @@ char* get_toml_file_path(int argc, char **argv) {
     else {
         FILE *fp = fopen(argv[1], "r");
         if (!fp) {
-            fprintf(stderr, "File %s does not exist.\n", get_full_path(argv[1]));
+            fprintf(stderr, "File %s does not exist.\n", argv[1]);
             return NULL;
         }
         fclose(fp);
