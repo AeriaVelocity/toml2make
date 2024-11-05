@@ -191,7 +191,7 @@ void create_directory_structure(const ProjectConfig *config) {
     }
     fprintf(fReadme, "# %s\n\n", config->project_name);
     fprintf(fReadme, "%s\n\n", config->project_description);
-    fprintf(fReadme, "## License\n\n%s\n\n", config->project_license);
+    fprintf(fReadme, "## License\n\n%s\n", config->project_license);
     fclose(fReadme);
     printf("Created README.md.\n");
 
