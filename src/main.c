@@ -48,10 +48,10 @@ Run `toml2make --init` to initialise a new project.\n");
             remove(config.paths_makefile);
             return EXIT_FAILURE;
         }
-    }
 
-    printf("Removing Makefile.\n");
-    remove(config.paths_makefile);
+        printf("Removing Makefile.\n");
+        remove(config.paths_makefile);
+    }
 
     printf("Done.\n");
     return EXIT_SUCCESS;
