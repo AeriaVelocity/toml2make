@@ -17,10 +17,10 @@ int main(int argc, char **argv) {
         }
     }
 
-    char *toml_file_path = get_toml_file_path(argc, argv);
+    char *toml_file_path = get_toml_file_path();
     if (!toml_file_path) {
         fprintf(stderr, "No cproject.toml found in the current working directory.\n\
-If it exists somewhere else, try `%s path/to/cproject.toml`.\n", argv[0]);
+Run `toml2make --init` to initialise a new project.\n");
         return EXIT_FAILURE;
     }
 
