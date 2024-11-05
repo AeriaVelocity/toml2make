@@ -59,7 +59,7 @@ You'll be asked the following questions:
 
 * **What's the name of your project?** Input the short name of your project in
   `hyphen-case` format. Default is `my-c-project`.
-* **What license are you using for your project?** Input the SPDX identifier of
+* **What licence are you using for your project?** Input the SPDX identifier of
   the licence you're using for the project. Default is `ISC`.
 * **Give a short description of your project.** Default is `A sample C project`.
 * **Who's the author of this project?** If this is a solo project, just input

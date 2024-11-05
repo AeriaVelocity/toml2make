@@ -39,7 +39,7 @@ char **ask_project_details() {
     }
 
     // Get project license
-    printf("What license are you using for your project?\n(default: ISC): ");
+    printf("What licence are you using for your project?\n(default: ISC): ");
     if (!fgets(project_license, MAX_VALUE_LENGTH, stdin)) {
         fprintf(stderr, "Failed to read project license.\n");
     }
